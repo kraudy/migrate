@@ -5,140 +5,147 @@
      h NoMain
 
       /INCLUDE './headers/member.rpgle'
-      
+
         Dcl-ds PgmInfo psds;
-          xPgmName char(10) pos(1);
-          xParms packed(3:0) pos(37);
-          xMsgID char(7) pos(40);
-          xJobName char(10) pos(244);
-          xUserId char(10) pos(254);
-          xJobNumber packed(6:0) pos(264);
+          xPgmName    char(10)    pos(1);
+          xParms      packed(3:0) pos(37);
+          xMsgID      char(7)     pos(40);
+          xJobName    char(10)    pos(244);
+          xUserId     char(10)    pos(254);
+          xJobNumber  packed(6:0) pos(264);
         End-ds;
       *
       * constants
       *
-     d Q               c                   const('''')
-     d Up              c                   const('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-     d Low             c                   const('abcdefghijklmnopqrstuvwxyz')
+        dcl-c Q   const('''');
+        dcl-c Up  const('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+        dcl-c Low const('abcdefghijklmnopqrstuvwxyz');
       *
       *  Field Definitions.
       *
-     d AllMembers      s             10a   inz('*ALL')
-     d ApiFile         s             10
-     d ApiLibrary      s             10
-     d ApiMember       s             10
-     d bOvr            s              1a   inz('0')
-     d FileLib         s             20a
-     d Format          s              8a
-     d MemberName      s             10
-     d nBufLen         s             10i 0
-     d ObjectLib       s             10
-     d OutData         s             30
-     d ReceiverLen     s             10i 0 inz(100)
-     d SpaceVal        s              1    inz(*BLANKS)
-     d SpaceAuth       s             10    inz('*CHANGE')
-     d SpaceText       s             50    inz(*BLANKS)
-     d SpaceRepl       s             10    inz('*YES')
-     d SpaceAttr       s             10    inz(*BLANKS)
-     d UseScreen       s               n
-     d UserSpaceOut    s             20
+        dcl-s AllMembers    char(10) inz('*ALL');
+        dcl-s ApiFile       char(10);
+        dcl-s ApiLibrary    char(10);
+        dcl-s ApiMember     char(10);
+        dcl-s bOvr          char(1) inz('0');
+        dcl-s FileLib       char(20);
+        dcl-s Format        char(8);
+        dcl-s MemberName    char(10);
+        dcl-s nBufLen       int(10);
+        dcl-s ObjectLib     char(10);
+        dcl-s OutData       char(30);
+        dcl-s ReceiverLen   int(10) inz(100);
+        dcl-s SpaceVal      char(1) inz(*BLANKS);
+        dcl-s SpaceAuth     char(10) inz('*CHANGE');
+        dcl-s SpaceText     char(50) inz(*BLANKS);
+        dcl-s SpaceRepl     char(10) inz('*YES');
+        dcl-s SpaceAttr     char(10) inz(*BLANKS);
+        dcl-s UseScreen     ind;
+        dcl-s UserSpaceOut  char(20);
       *
       * QUSRMBRD API return Struture
       * ============================
-     d Mbrd0100        ds                  inz
-     d  nBytesRtn                    10i 0
-     d  nBytesAval                   10i 0
-     d  DBXLIB                       10a
-     d  DBXFIL                       10a
-     d  MbrName                      10a
-     d  FileAttr                     10a
-     d  SrcType                      10a
-     d  dtCrtDate                    13a
-     d  dtLstChg                     13a
-     d  MbrText                      50a
-     d  bIsSource                     1a
-     d  RmtFile                       1a
-     d  LglPhyFile                    1a
-     d  ODPSharing                    1a
-     d  filler2                       2a
-     d  RecCount                     10i 0
-     d  DltRecCnt                    10i 0
-     d  DataSpaceSz                  10i 0
-     d  AccpthSz                     10i 0
-     d  NbrBasedOnMbr                10i 0
+        dcl-ds Mbrd0100 inz;
+          nBytesRtn     int(10);
+          nBytesAval    int(10);
+          DBXLIB        char(10);
+          DBXFIL        char(10);
+          MbrName       char(10);
+          FileAttr      char(10);
+          SrcType       char(10);
+          dtCrtDate     char(13);
+          dtLstChg      char(13);
+          MbrText       char(50);
+          bIsSource     char(1);
+          RmtFile       char(1);
+          LglPhyFile    char(1);
+          ODPSharing    char(1);
+          filler2       char(2);
+          RecCount      int(10);
+          DltRecCnt     int(10);
+          DataSpaceSz   int(10);
+          AccpthSz      int(10);
+          NbrBasedOnMbr int(10);
+        end-ds;
       *
       * Create userspace datastructure
       *
-     d  stuff          DS
-     d  StartPosit                   10i 0
-     d  StartLen                     10i 0
-     d  SpaceLen                     10i 0
-     d  ReceiveLen                   10i 0
-     d  MessageKey                   10i 0
-     d  MsgDtaLen                    10i 0
-     d  MsgQueNbr                    10i 0
+        dcl-ds stuff;
+          StartPosit  int(10);
+          StartLen    int(10);
+          SpaceLen    int(10);
+          ReceiveLen  int(10);
+          MessageKey  int(10);
+          MsgDtaLen   int(10);
+          MsgQueNbr   int(10);
+        end-ds;
       *
       * Date structure for retriving userspace info
       *
-     d InputDs         DS
-     d  UserSpace              1     20
-     d  SpaceName              1     10
-     d  SpaceLib              11     20
-     d  InpFileLib            29     48
-     d  InpFFilNam            29     38
-     d  InpFFilLib            39     48
-     d  InpRcdFmt             49     58
+        dcl-ds InputDs;
+          UserSpace   char(20) pos(1);
+          SpaceName   char(10) pos(1);
+          SpaceLib    char(10) pos(11);
+          InpFileLib  char(20) pos(29);
+          InpFFilNam  char(10) pos(29);
+          InpFFilLib  char(10) pos(39);
+          InpRcdFmt   char(10) pos(49);
+        end-ds;
       *
       *  Data structure for the retrieve user space command
       *
-     d GENDS           DS
-     d  Filler3                     116
-     d  OffsetHdr                    10i 0
-     d  SizeHeader                   10i 0
-     d  OffsetList                   10i 0
-     d  Filler4                       4
-     d  NbrInList                    10i 0
-     d  SizeEntry                    10i 0
+        dcl-ds GENDS;
+          Filler3     char(116);
+          OffsetHdr   int(10);
+          SizeHeader  int(10);
+          OffsetList  int(10);
+          Filler4     char(4);
+          NbrInList   int(10);
+          SizeEntry   int(10);
+        end-ds;
       *
       * Datastructure for retrieving elements from userspace
       *
-     d HeaderDs        DS
-     d  OutFileNam             1     10
-     d  OutLibName            11     20
-     d  OutType               21     25
-     d  OutFormat             31     40
-     d  RecordLen             41     44i 0
+        dcl-ds HeaderDs;
+          OutFileNam  char(10)  pos(1);
+          OutLibName  char(10)  pos(11);
+          OutType     char(5)   pos(21);
+          OutFormat   char(10)  pos(31);
+          RecordLen   int(5)    pos(41);
+        end-ds;
       *
       * Retrive object description
       *
-     d RtvObjInfo      DS
-     d  RoBytRtn                     10i 0
-     d  RoBytAvl                     10i 0
-     d  RoObjNam                     10a
-     d  RoObjLib                     10a
-     d  RoObjTypRt                   10a
-     d  RoObjLibRt                   10a
-     d  RoObjASP                     10i 0
-     d  RoObjOwn                     10a
-     d  RoObjDmn                      2a
-     d  RoObjCrtDts                  07a
-     d  RoObjCrtTim                  06a
-     d  RoObjChgDts                  07a
-     d  RoObjChgTim                  06a
-     d  RoExtAtr                     10a
-     d  RoTxtDsc                     50a
-     d  RoSrcF                       10a
-     d  RoSrcLib                     10a
-     d  RoSrcMbr                     10a
+        dcl-ds RtvObjInfo;
+          RoBytRtn    int(10);
+          RoBytAvl    int(10);
+          RoObjNam    char(10);
+          RoObjLib    char(10);
+          RoObjTypRt  char(10);
+          RoObjLibRt  char(10);
+          RoObjASP    int(10);
+          RoObjOwn    char(10);
+          RoObjDmn    char(2);
+          RoObjCrtDts char(7);
+          RoObjCrtTim char(6);
+          RoObjChgDts char(7);
+          RoObjChgTim char(6);
+          RoExtAtr    char(10);
+          RoTxtDsc    char(50);
+          RoSrcF      char(10);
+          RoSrcLib    char(10);
+          RoSrcMbr    char(10);
+        end-ds;
       *
       * API Error Data Structure
       *
-     d Errords         ds
-     d  BytesPrv               1      4I 0 inz(%size(errords))
-     d  BytesAvl               5      8I 0 inz(0)
-     d  MessageId              9     15
-     d  ERRxxx                16     16
-     d  MessageDta            17    256
+        //dcl-ds Errords;
+        //  BytesPrv    int(5)    inz(%size(errords)) pos(1);
+        //  BytesAvl    int(5)    inz(0)              pos(6);
+        //  MessageId   char(7)                       pos(10);
+        //  ERRxxx      char(1)                       pos(17);
+        //  MessageDta  char(240)                     pos(18);
+        //end-ds;
 
       **********************************
 
@@ -214,43 +221,42 @@
       **========================================================================
       ** xQUSLMBR  - API List all members in a file
       **========================================================================
-     c     xQUSLMBR      begsr
-      **
-     c                   eval      nBufLen = %size(MbrD0100)
-      **
-     c                   call(e)   'QUSLMBR'
-     c                   parm                    UserSpaceOut
-     c                   parm                    Format
-     c                   parm                    FileLib
-     c                   parm                    AllMembers
-     c                   parm                    bOvr
-     c                   parm                    ErrorDs
-      *
-     c                   endsr
+      *c     xQUSLMBR      begsr
+      * **
+      *c                   eval      nBufLen = %size(MbrD0100)
+      * **
+      *c                   call(e)   'QUSLMBR'
+      *c                   parm                    UserSpaceOut
+      *c                   parm                    Format
+      *c                   parm                    FileLib
+      *c                   parm                    AllMembers
+      *c                   parm                    bOvr
+      *c                   parm                    ErrorDs
+      * *
+      *c                   endsr
+        begsr xQUSLMBR;
+          nBufLen = %size(MbrD0100);
 
+          //callp(e) 'QUSLMBR' (UserSpaceOut: Format: FileLib: AllMembers: bOvr: ErrorDs);
+          RtvMberList(UserSpaceOut: Format: FileLib: AllMembers: bOvr: ErrorDs);
+        endsr;
+
+      * AQUI TERMINA EL PROCEDIMIENTO PRINCIPAL
      P                 E
+
 
       **********************************
+        dcl-proc Mbrs_Next export;
+          dcl-pi Mbrs_Next likeDS(ListDS);
+          end-pi;
 
-     P Mbrs_Next       B                   Export
-     D Mbrs_Next       PI                  LikeDS(ListDS)
+          RtvUserSpace (UserSpaceOut: StartPosit: StartLen: ListDs: ErrorDs);
 
-     c                   call(e)   'QUSRTVUS'
-     c                   parm                    UserSpaceOut
-     c                   parm                    StartPosit
-     c                   parm                    StartLen
-     c                   parm                    ListDs
-     c                   parm                    ErrorDs
-      *
-     c                   eval      ApiMember = LmMember
+          ApiMember = LmMember;
 
-      ** This information is not needed right now
-     c**                 exsr      xQUSRMBRD
-      **
-      ** Test comment
+          // Increment the start position for the next entry
+          StartPosit += SizeEntry;
 
-     c                   eval      StartPosit = StartPosit + SizeEntry
+          return ListDS;
 
-     c                   return    ListDS
-
-     P                 E
+        end-proc;
