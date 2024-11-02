@@ -1,5 +1,5 @@
-DBGVIEW=*NONE
-BIN_LIB=MIGRATE
+DBGVIEW=*SOURCE
+BIN_LIB=ROBKRAUDY2
 
 # Makefile for migrate project
 
