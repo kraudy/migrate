@@ -5,14 +5,15 @@
      h NoMain
 
       /INCLUDE './headers/member.rpgle'
-
-     d PgmInfo        SDS
-     d  xPgmName               1     10
-     d  xParms                37     39  0
-     d  xMsgID                40     46
-     d  xJobName             244    253
-     d  xUserId              254    263
-     d  xJobNumber           264    269  0
+      
+        Dcl-ds PgmInfo psds;
+          xPgmName char(10) pos(1);
+          xParms packed(3:0) pos(37);
+          xMsgID char(7) pos(40);
+          xJobName char(10) pos(244);
+          xUserId char(10) pos(254);
+          xJobNumber packed(6:0) pos(264);
+        End-ds;
       *
       * constants
       *
