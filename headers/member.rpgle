@@ -18,6 +18,9 @@
 
      D Mbrs_Next       PR                  LikeDS(ListDs)
 
+      *
+      * API Error Data Structure
+      *
         dcl-ds Errords;
           BytesPrv    int(5)    inz(%size(errords)) pos(1);
           BytesAvl    int(5)    inz(0)              pos(6);
@@ -25,8 +28,7 @@
           ERRxxx      char(1)                       pos(17);
           MessageDta  char(240)                     pos(18);
         end-ds;
-
-
+    
         dcl-pr RtvUserSpace extpgm('QUSRTVUS') ;
           *n char(20) const ;   // Name
           *n int(10) const ;    // Starting position
@@ -43,3 +45,25 @@
           *n char(1) ; 
           *n LikeDS(Errords) options(*varsize:*nopass) ; 
         end-pr;
+
+        dcl-pr CrtUsrSpace extpgm('QUSCRTUS') ;
+          *n char(20) const ;   // Name
+          *n char(10) const ;    
+          *n int(10) const ;   
+          *n char(1) const ;       
+          *n char(10) const ; 
+          *n char(50) const ; 
+          *n char(10) const ; 
+          *n LikeDS(Errords) options(*varsize:*nopass) ; 
+        end-pr;
+
+        //dcl-pr CreateUserSpace extpgm('QUSCRTUS') ;
+        //  *n char(20) const ;   // Name
+        //  *n char(10) const ;   // Attribute
+        //  *n int(10) const ;    // Initial size
+        //  *n char(1) const ;    // Intial value
+        //  *n char(10) const ;   // Authority
+        //  *n char(50) const ;   // Text
+        //  *n char(10) const ;   // Replace existing
+        //  *n char(32767) options(*varsize:*nopass) ;  // Error feedback
+        //end-pr 

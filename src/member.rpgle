@@ -136,36 +136,28 @@
           RoSrcLib    char(10);
           RoSrcMbr    char(10);
         end-ds;
-      *
-      * API Error Data Structure
-      *
-        //dcl-ds Errords;
-        //  BytesPrv    int(5)    inz(%size(errords)) pos(1);
-        //  BytesAvl    int(5)    inz(0)              pos(6);
-        //  MessageId   char(7)                       pos(10);
-        //  ERRxxx      char(1)                       pos(17);
-        //  MessageDta  char(240)                     pos(18);
-        //end-ds;
+      
 
       **********************************
 
-     P Mbrs_List       B                   Export
-     D Mbrs_List       PI            10i 0
-     D    pLibrary                   10A   Const
-     D    pObject                    10A   Const
+       dcl-proc Mbrs_List export;
+        dcl-pi Mbrs_List int(10);
+          pLibrary char(10) const;
+          pObject   char(10) const;
+        end-pi;
 
-     c                   Eval      FileLib = pObject+pLibrary
+        FileLib = pObject + pLibrary;
 
-     c                   exsr      xQUSCRTUS
+        exsr xQUSCRTUS;
       **
-     c                   eval      MemberName = '*ALL'
-     c                   eval      Format  = 'MBRL0200'
-     c                   exsr      xQUSLMBR
+        MemberName = '*ALL';
+        Format = 'MBRL0200';
+        exsr xQUSLMBR;
       **
       **  Read back the members
       **
-     c                   eval      StartPosit = 1
-     c                   eval      StartLen = 140
+        StartPosit = 1;
+        StartLen = 140;
       **
       ** First call to get data offsets(start)
       **
@@ -178,8 +170,8 @@
       **
       ** Then call to get number of entries
       **
-     c                   eval      StartPosit = OffsetHdr + 1
-     c                   eval      StartLen = SizeHeader
+        StartPosit = OffsetHdr + 1;
+        StartLen = SizeHeader;
       **
      c                   call(e)   'QUSRTVUS'
      c                   parm                    UserSpaceOut
@@ -188,24 +180,24 @@
      c                   parm                    HeaderDs
      c                   parm                    ErrorDs
       **
-     c                   eval      StartPosit = OffsetList + 1
-     c                   eval      StartLen = SizeEntry
+        StartPosit = OffsetList + 1;
+        StartLen = SizeEntry;
 
-     c                   return    NbrInList
+        return NbrInList;
 
       **========================================================================
       ** xQUSCRTUS - API to create user space
       **========================================================================
-     c     xQUSCRTUS     begsr
-      **
-      ** Create a user space named ListMember in QTEMP.
-      **
-     c                   Eval      BytesPrv = 116
-     c                   Eval      SpaceName = 'MEMBERS'
-     c                   Eval      SpaceLib = 'QTEMP'
-      **
-      ** Create the user space
-      **
+        begsr xQUSCRTUS;
+     **
+     ** Create a user space named ListMember in QTEMP.
+     **
+          BytesPrv = 116;
+          SpaceName = 'MEMBERS';
+          SpaceLib = 'QTEMP';
+     **
+     ** Create the user space
+     **
      c                   call(e)   'QUSCRTUS'
      c                   parm      UserSpace     UserSpaceOut
      c                   parm                    SpaceAttr
@@ -215,34 +207,35 @@
      c                   parm                    SpaceText
      c                   parm                    SpaceRepl
      c                   parm                    ErrorDs
-      **
-     c                   endsr
+     **
+        endsr;
+
+        //begsr xQUSCRTUS;
+
+        //  // Create the user space
+        //  //callp(e) 'QUSCRTUS' (UserSpaceOut: SpaceAttr: 4096: SpaceVal: SpaceAuth: SpaceText: 
+        //  //SpaceRepl: ErrorDs);
+
+        //  //CrtUsrSpace(UserSpaceOut: SpaceAttr: 4096: SpaceVal: 
+        //  //            SpaceAuth: SpaceText: SpaceRepl: ErrorDs);
+        //  CrtUsrSpace(UserSpaceOut: '': 1: x'00': 
+        //              '*CHANGE': SpaceText: '*YES': ErrorDs);
+        //endsr;
 
       **========================================================================
       ** xQUSLMBR  - API List all members in a file
       **========================================================================
-      *c     xQUSLMBR      begsr
-      * **
-      *c                   eval      nBufLen = %size(MbrD0100)
-      * **
-      *c                   call(e)   'QUSLMBR'
-      *c                   parm                    UserSpaceOut
-      *c                   parm                    Format
-      *c                   parm                    FileLib
-      *c                   parm                    AllMembers
-      *c                   parm                    bOvr
-      *c                   parm                    ErrorDs
-      * *
-      *c                   endsr
         begsr xQUSLMBR;
           nBufLen = %size(MbrD0100);
 
-          //callp(e) 'QUSLMBR' (UserSpaceOut: Format: FileLib: AllMembers: bOvr: ErrorDs);
-          RtvMberList(UserSpaceOut: Format: FileLib: AllMembers: bOvr: ErrorDs);
+          //callp(e) 'QUSLMBR' (UserSpaceOut: Format: FileLib: AllMembers: 
+          //bOvr: ErrorDs);
+          RtvMberList(UserSpaceOut: Format: FileLib: AllMembers: 
+                      bOvr: ErrorDs);
         endsr;
 
       * AQUI TERMINA EL PROCEDIMIENTO PRINCIPAL
-     P                 E
+       end-proc;
 
 
       **********************************
